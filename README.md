@@ -1,5 +1,5 @@
 # WplusJetsAnalysis
-Pythia analysis code developed by bjohns
+Pythia analysis code developed by bjohns. Tarball available for download at: https://github.com/bjohns664297/WplusJetsBaseline
 
 Once you have used WplusJetsBaseline to create a root file output in /WplusJetsBaseline/pythia-outputs, you can analyze the result using WplusJetsAnalysis. 
 
