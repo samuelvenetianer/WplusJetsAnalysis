@@ -1,6 +1,7 @@
 """
 This script uses pyroot functionality to create a png plot of multiple .root files overlaid
-Call in terminal as "python compare_plot.py"
+Call in terminal as "python compare_plot.py <filestem1> <filestem2> etc..."
+        Up to 9 input files allowed (constrained by line style, which can be changed)
 """
 
 # reformat into loop over a list of filenames
@@ -16,7 +17,6 @@ ROOT.gStyle.SetOptStat(0)
 filestems = []
 for i in range(1,len(sys.argv)):
         filestems.append(sys.argv[i])
-print(filestems)
 
 # Create canvas
 c = ROOT.TCanvas("c", "c", 1200, 800)
@@ -31,7 +31,6 @@ s = ROOT.THStack("s", "s")
 hists = []
 
 for i in range(0, len(filestems)):
-        print(i)
         print("Creating histogram for", filestems[i])
         hist_file = ROOT.TFile(filestems[i]+".root")
         hist_name = hist_file.GetListOfKeys()[0] # Gets name and title and assigns to variable
@@ -51,14 +50,6 @@ for i in range(0, len(filestems)):
 
 c.cd()
 
-# DO LEGEND HERE? loop through hists
-# legend settings
-# legend = ROOT.TLegend(.5, 0.90, 0.8, 0.80) # (x1, y1, x2, y2)
-# legend.AddEntry(hist1, filestems[0], "l")
-# legend.SetTextSize(0.04)
-# legend.SetBorderSize(0)
-# legend.Draw("L")
-
 s.Draw("nostack")
 s.SetTitle("")
 s.GetXaxis().SetTitle("Z pT")
@@ -71,7 +62,12 @@ s.GetXaxis().SetTitleOffset(1.1)
 s.GetYaxis().SetTitleOffset(1.6)
 s.GetXaxis().SetMaxDigits(2)
 
-c.SaveAs(f"plots/z_pt.png")
+# legend settings
+legend = ROOT.TLegend(.5, 0.90, 0.8, 0.75) # (x1, y1, x2, y2)
+for i in range(0,len(filestems)):
+        legend.AddEntry(hists[i], filestems[i], "l")
+        legend.SetTextSize(0.04)
+        legend.SetBorderSize(0)
+        legend.Draw("L")
 
-# only plotting first and third. Need to try instead adding the histograms to a stack, then plotting the stack at once)
-# Then, create canvas and plot on canvas
+c.SaveAs(f"plots/z_pt.png")
