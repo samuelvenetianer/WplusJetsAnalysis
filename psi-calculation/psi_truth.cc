@@ -148,7 +148,7 @@ int main(int argc, char* argv[]) {
 
     // Specify input file
 
-    TFile f("/cluster/tufts/beaucheminlab/svenet01/WplusJetsAnalysis/pythia-outputs/2025/032326_cut20GeV.root"); 
+    TFile f("/cluster/tufts/beaucheminlab/svenet01/WplusJetsAnalysis/pythia-outputs/2025/040726_test.root"); 
     TTree *input_tree = (TTree*)f.Get("ParticleTree");
 
     // Initialize multiplicity variables for 1p1n-1p1n channel
@@ -313,7 +313,7 @@ int main(int argc, char* argv[]) {
 
     // initialize summary histograms for COM_real
     TH1* h6 = nullptr;
-    h6 = new TH1D("h6", "COM pT", 40, 0, 100);
+    h6 = new TH1D("h6", "COM pT", 40, 0, 10);
     h6->SetDirectory(nullptr);
     TFile fout6("com_real_pt.root", "recreate");
 
@@ -361,32 +361,32 @@ int main(int argc, char* argv[]) {
     // Initialize histograms for COM vis and real Px Py Pz
 
     TH1* h15 = nullptr;
-    h15 = new TH1D("h15", "COM vis px", 40, 0, 100);
+    h15 = new TH1D("h15", "COM vis px", 40, -50, 50);
     h15->SetDirectory(nullptr);
     TFile fout15("com_vis_px.root", "recreate");
 
     TH1* h16 = nullptr;
-    h16 = new TH1D("h16", "COM vis py", 40, 0, 100);
+    h16 = new TH1D("h16", "COM vis py", 40, -50, 50);
     h16->SetDirectory(nullptr);
     TFile fout16("com_vis_py.root", "recreate");
 
     TH1* h17 = nullptr;
-    h17 = new TH1D("h17", "COM vis pz", 40, 0, 100);
+    h17 = new TH1D("h17", "COM vis pz", 40, -50, 50);
     h17->SetDirectory(nullptr);
     TFile fout17("com_vis_pz.root", "recreate");
 
     TH1* h18 = nullptr;
-    h18 = new TH1D("h18", "COM real px", 40, 0, 100);
+    h18 = new TH1D("h18", "COM real px", 40, -50, 50);
     h18->SetDirectory(nullptr);
     TFile fout18("com_real_px.root", "recreate");
 
     TH1* h19 = nullptr;
-    h19 = new TH1D("h19", "COM real py", 40, 0, 100);
+    h19 = new TH1D("h19", "COM real py", 40, -50, 50);
     h19->SetDirectory(nullptr);
     TFile fout19("com_real_py.root", "recreate");
 
     TH1* h20 = nullptr;
-    h20 = new TH1D("h20", "COM real pz", 40, 0, 100);
+    h20 = new TH1D("h20", "COM real pz", 40, -50, 50);
     h20->SetDirectory(nullptr);
     TFile fout20("com_real_pz.root", "recreate");
 
@@ -418,6 +418,26 @@ int main(int argc, char* argv[]) {
     h25->SetDirectory(nullptr);
     TFile fout25("large_delta_p.root", "recreate");
 
+    // Initialize hist for ratios
+    TH1* h26 = nullptr;
+    h26 = new TH1D("h26", "ratio vis to real", 20, 0, 15);
+    h26->SetDirectory(nullptr);
+    TFile fout26("ratio_vis_real.root", "recreate");
+
+    TH1* h27 = nullptr;
+    h27 = new TH1D("h27", "ratio vis to real small pT real", 20, 0, 15);
+    h27->SetDirectory(nullptr);
+    TFile fout27("ratio_vis_real_small_ptreal.root", "recreate");
+
+    TH1* h28 = nullptr;
+    h28 = new TH1D("h28", "ratio vis to real med pT real", 20, 0, 15);
+    h28->SetDirectory(nullptr);
+    TFile fout28("ratio_vis_real_med_ptreal.root", "recreate");
+
+    TH1* h29 = nullptr;
+    h29 = new TH1D("h29", "ratio vis to real large pT real", 20, 0, 15);
+    h29->SetDirectory(nullptr);
+    TFile fout29("ratio_vis_real_large_ptreal.root", "recreate");
 
     // TRandom3 rand;  
     int nEntries = input_tree->GetEntries();    
@@ -559,15 +579,28 @@ int main(int argc, char* argv[]) {
 
             // std::cout << "dx, dy, dz: " << dx_COM << " , " << dy_COM << " , " << dz_COM << " , " << std::endl;
 
-            if ((dx_COM < 20) && (dy_COM < 20) ){
+            if ((dx_COM < 10) && (dy_COM < 10) ){
                 h24->Fill(psi_truth_result);
             }
 
-            if ((dx_COM > 20) && (dy_COM > 20)){
+            if ((dx_COM > 10) && (dy_COM > 10)){
                 h25->Fill(psi_truth_result);
             }
              
+            float ratio = COM_pt/COM_real_pt;
+            h26->Fill(ratio);
 
+            if ((COM_real_pt > 0) && (COM_real_pt <2)){
+                h27->Fill(ratio);
+            }
+
+            if ((COM_real_pt > 2) && (COM_real_pt <4)){
+                h28->Fill(ratio);
+            }
+
+            if ((COM_real_pt > 4) && (COM_real_pt <6)){
+                h29->Fill(ratio);
+            }
         }
        
     }  
@@ -584,155 +617,155 @@ int main(int argc, char* argv[]) {
     auto min_max_COM_real_phi = minmax_element(COM_real_phi_STORE.begin(), COM_real_phi_STORE.end());
     auto min_max_COM_real_E = minmax_element(COM_real_E_STORE.begin(), COM_real_E_STORE.end());
 
-    // std::cout << "Psi (min,max): " << " (" << *min_max_psi.first <<"," << *min_max_psi.second << ")" << std::endl;
+    std::cout << "Psi (min,max): " << " (" << *min_max_psi.first <<"," << *min_max_psi.second << ")" << std::endl;
     
-    // std::cout << "COM pT (min,max): " << " (" << *min_max_COM_pt.first <<"," << *min_max_COM_pt.second << ")" << std::endl;
-    // std::cout << "COM eta (min,max): " << " (" << *min_max_COM_eta.first <<"," << *min_max_COM_eta.second << ")" << std::endl;
-    // std::cout << "COM phi (min,max): " << " (" << *min_max_COM_phi.first <<"," << *min_max_COM_phi.second << ")" << std::endl;
-    // std::cout << "COM E (min,max): " << " (" << *min_max_COM_E.first <<"," << *min_max_COM_E.second << ")" << std::endl;
+    std::cout << "COM pT (min,max): " << " (" << *min_max_COM_pt.first <<"," << *min_max_COM_pt.second << ")" << std::endl;
+    std::cout << "COM eta (min,max): " << " (" << *min_max_COM_eta.first <<"," << *min_max_COM_eta.second << ")" << std::endl;
+    std::cout << "COM phi (min,max): " << " (" << *min_max_COM_phi.first <<"," << *min_max_COM_phi.second << ")" << std::endl;
+    std::cout << "COM E (min,max): " << " (" << *min_max_COM_E.first <<"," << *min_max_COM_E.second << ")" << std::endl;
 
-    // std::cout << "COM real pT (min,max): " << " (" << *min_max_COM_real_pt.first <<"," << *min_max_COM_real_pt.second << ")" << std::endl;
-    // std::cout << "COM real eta (min,max): " << " (" << *min_max_COM_real_eta.first <<"," << *min_max_COM_real_eta.second << ")" << std::endl;
-    // std::cout << "COM real phi (min,max): " << " (" << *min_max_COM_real_phi.first <<"," << *min_max_COM_real_phi.second << ")" << std::endl;
-    // std::cout << "COM real E (min,max): " << " (" << *min_max_COM_real_E.first <<"," << *min_max_COM_real_E.second << ")" << std::endl;
+    std::cout << "COM real pT (min,max): " << " (" << *min_max_COM_real_pt.first <<"," << *min_max_COM_real_pt.second << ")" << std::endl;
+    std::cout << "COM real eta (min,max): " << " (" << *min_max_COM_real_eta.first <<"," << *min_max_COM_real_eta.second << ")" << std::endl;
+    std::cout << "COM real phi (min,max): " << " (" << *min_max_COM_real_phi.first <<"," << *min_max_COM_real_phi.second << ")" << std::endl;
+    std::cout << "COM real E (min,max): " << " (" << *min_max_COM_real_E.first <<"," << *min_max_COM_real_E.second << ")" << std::endl;
 
-    // fout1.cd();
-    // h1->GetXaxis()->SetTitle("Psi Truth");
-    // h1->GetYaxis()->SetTitle("Entries");
-    // h1->Write();
-    // fout1.Close();   
+    fout1.cd();
+    h1->GetXaxis()->SetTitle("Psi Truth");
+    h1->GetYaxis()->SetTitle("Entries");
+    h1->Write();
+    fout1.Close();   
 
-    // fout2.cd();
-    // h2->GetXaxis()->SetTitle("COM pT");
-    // h2->GetYaxis()->SetTitle("Entries");
-    // h2->Write();
-    // fout2.Close();    
+    fout2.cd();
+    h2->GetXaxis()->SetTitle("COM pT");
+    h2->GetYaxis()->SetTitle("Entries");
+    h2->Write();
+    fout2.Close();    
 
-    // fout3.cd();
-    // h3->GetXaxis()->SetTitle("COM eta");
-    // h3->GetYaxis()->SetTitle("Entries");
-    // h3->Write();
-    // fout3.Close();    
+    fout3.cd();
+    h3->GetXaxis()->SetTitle("COM eta");
+    h3->GetYaxis()->SetTitle("Entries");
+    h3->Write();
+    fout3.Close();    
 
-    // fout4.cd();
-    // h4->GetXaxis()->SetTitle("COM phi");
-    // h4->GetYaxis()->SetTitle("Entries");
-    // h4->Write();
-    // fout4.Close();    
+    fout4.cd();
+    h4->GetXaxis()->SetTitle("COM phi");
+    h4->GetYaxis()->SetTitle("Entries");
+    h4->Write();
+    fout4.Close();    
 
-    // fout5.cd();
-    // h5->GetXaxis()->SetTitle("COM E");
-    // h5->GetYaxis()->SetTitle("Entries");
-    // h5->Write();
-    // fout5.Close(); 
+    fout5.cd();
+    h5->GetXaxis()->SetTitle("COM E");
+    h5->GetYaxis()->SetTitle("Entries");
+    h5->Write();
+    fout5.Close(); 
 
-    // fout6.cd();
-    // h6->GetXaxis()->SetTitle("COM real pT");
-    // h6->GetYaxis()->SetTitle("Entries");
-    // h6->Write();
-    // fout6.Close();    
+    fout6.cd();
+    h6->GetXaxis()->SetTitle("COM real pT");
+    h6->GetYaxis()->SetTitle("Entries");
+    h6->Write();
+    fout6.Close();    
 
-    // fout7.cd();
-    // h7->GetXaxis()->SetTitle("COM real eta");
-    // h7->GetYaxis()->SetTitle("Entries");
-    // h7->Write();
-    // fout7.Close();    
+    fout7.cd();
+    h7->GetXaxis()->SetTitle("COM real eta");
+    h7->GetYaxis()->SetTitle("Entries");
+    h7->Write();
+    fout7.Close();    
 
-    // fout8.cd();
-    // h8->GetXaxis()->SetTitle("COM real phi");
-    // h8->GetYaxis()->SetTitle("Entries");
-    // h8->Write();
-    // fout8.Close();    
+    fout8.cd();
+    h8->GetXaxis()->SetTitle("COM real phi");
+    h8->GetYaxis()->SetTitle("Entries");
+    h8->Write();
+    fout8.Close();    
 
-    // fout9.cd();
-    // h9->GetXaxis()->SetTitle("COM real E");
-    // h9->GetYaxis()->SetTitle("Entries");
-    // h9->Write();
-    // fout9.Close();    
+    fout9.cd();
+    h9->GetXaxis()->SetTitle("COM real E");
+    h9->GetYaxis()->SetTitle("Entries");
+    h9->Write();
+    fout9.Close();    
 
-    // fout10.cd();
-    // h10->GetXaxis()->SetTitle("COM vis for Z pT < 20 GeV");
-    // h10->GetYaxis()->SetTitle("Entries");
-    // h10->Write();
-    // fout10.Close();   
+    fout10.cd();
+    h10->GetXaxis()->SetTitle("COM vis for Z pT < 20 GeV");
+    h10->GetYaxis()->SetTitle("Entries");
+    h10->Write();
+    fout10.Close();   
 
-    // fout11.cd();
-    // h11->GetXaxis()->SetTitle("COM vis for Z pT 20-40 GeV");
-    // h11->GetYaxis()->SetTitle("Entries");
-    // h11->Write();
-    // fout11.Close();     
+    fout11.cd();
+    h11->GetXaxis()->SetTitle("COM vis for Z pT 20-40 GeV");
+    h11->GetYaxis()->SetTitle("Entries");
+    h11->Write();
+    fout11.Close();     
 
-    // fout12.cd();
-    // h12->GetXaxis()->SetTitle("COM vis for Z pT 20-40 GeV");
-    // h12->GetYaxis()->SetTitle("Entries");
-    // h12->Write();
-    // fout12.Close(); 
+    fout12.cd();
+    h12->GetXaxis()->SetTitle("COM vis for Z pT 20-40 GeV");
+    h12->GetYaxis()->SetTitle("Entries");
+    h12->Write();
+    fout12.Close(); 
 
-    // fout13.cd();
-    // h13->GetXaxis()->SetTitle("COM vis for Z pT 20-40 GeV");
-    // h13->GetYaxis()->SetTitle("Entries");
-    // h13->Write();
-    // fout13.Close(); 
+    fout13.cd();
+    h13->GetXaxis()->SetTitle("COM vis for Z pT 20-40 GeV");
+    h13->GetYaxis()->SetTitle("Entries");
+    h13->Write();
+    fout13.Close(); 
 
-    // fout14.cd();
-    // h14->GetXaxis()->SetTitle("COM vis for Z pT 20-40 GeV");
-    // h14->GetYaxis()->SetTitle("Entries");
-    // h14->Write();
-    // fout14.Close();      
+    fout14.cd();
+    h14->GetXaxis()->SetTitle("COM vis for Z pT 20-40 GeV");
+    h14->GetYaxis()->SetTitle("Entries");
+    h14->Write();
+    fout14.Close();      
 
-    // fout15.cd();
-    // h15->GetXaxis()->SetTitle("COM vis px");
-    // h15->GetYaxis()->SetTitle("Entries");
-    // h15->Write();
-    // fout15.Close();   
+    fout15.cd();
+    h15->GetXaxis()->SetTitle("COM vis px");
+    h15->GetYaxis()->SetTitle("Entries");
+    h15->Write();
+    fout15.Close();   
 
-    // fout16.cd();
-    // h16->GetXaxis()->SetTitle("COM vis py");
-    // h16->GetYaxis()->SetTitle("Entries");
-    // h16->Write();
-    // fout16.Close();
+    fout16.cd();
+    h16->GetXaxis()->SetTitle("COM vis py");
+    h16->GetYaxis()->SetTitle("Entries");
+    h16->Write();
+    fout16.Close();
 
-    // fout17.cd();
-    // h17->GetXaxis()->SetTitle("COM vis py");
-    // h17->GetYaxis()->SetTitle("Entries");
-    // h17->Write();
-    // fout17.Close();
+    fout17.cd();
+    h17->GetXaxis()->SetTitle("COM vis py");
+    h17->GetYaxis()->SetTitle("Entries");
+    h17->Write();
+    fout17.Close();
 
-    // fout18.cd();
-    // h18->GetXaxis()->SetTitle("COM real px");
-    // h18->GetYaxis()->SetTitle("Entries");
-    // h18->Write();
-    // fout18.Close();
+    fout18.cd();
+    h18->GetXaxis()->SetTitle("COM real px");
+    h18->GetYaxis()->SetTitle("Entries");
+    h18->Write();
+    fout18.Close();
 
-    // fout19.cd();
-    // h19->GetXaxis()->SetTitle("COM vis py");
-    // h19->GetYaxis()->SetTitle("Entries");
-    // h19->Write();
-    // fout19.Close();
+    fout19.cd();
+    h19->GetXaxis()->SetTitle("COM vis py");
+    h19->GetYaxis()->SetTitle("Entries");
+    h19->Write();
+    fout19.Close();
 
-    // fout20.cd();
-    // h20->GetXaxis()->SetTitle("COM vis pz");
-    // h20->GetYaxis()->SetTitle("Entries");
-    // h20->Write();
-    // fout20.Close();
+    fout20.cd();
+    h20->GetXaxis()->SetTitle("COM vis pz");
+    h20->GetYaxis()->SetTitle("Entries");
+    h20->Write();
+    fout20.Close();
 
-    // fout21.cd();
-    // h21->GetXaxis()->SetTitle("dx COM");
-    // h21->GetYaxis()->SetTitle("Entries");
-    // h21->Write();
-    // fout21.Close();
+    fout21.cd();
+    h21->GetXaxis()->SetTitle("dx COM");
+    h21->GetYaxis()->SetTitle("Entries");
+    h21->Write();
+    fout21.Close();
 
-    // fout22.cd();
-    // h22->GetXaxis()->SetTitle("dy COM");
-    // h22->GetYaxis()->SetTitle("Entries");
-    // h22->Write();
-    // fout22.Close();
+    fout22.cd();
+    h22->GetXaxis()->SetTitle("dy COM");
+    h22->GetYaxis()->SetTitle("Entries");
+    h22->Write();
+    fout22.Close();
 
-    // fout23.cd();
-    // h23->GetXaxis()->SetTitle("dz COM");
-    // h23->GetYaxis()->SetTitle("Entries");
-    // h23->Write();
-    // fout23.Close();
+    fout23.cd();
+    h23->GetXaxis()->SetTitle("dz COM");
+    h23->GetYaxis()->SetTitle("Entries");
+    h23->Write();
+    fout23.Close();
 
     fout24.cd();
     h24->GetXaxis()->SetTitle("Small delta p");
@@ -745,6 +778,30 @@ int main(int argc, char* argv[]) {
     h25->GetYaxis()->SetTitle("Entries");
     h25->Write();
     fout25.Close();
+
+    fout26.cd();
+    h26->GetXaxis()->SetTitle("Ratio of Z vis to Z real");
+    h26->GetYaxis()->SetTitle("Entries");
+    h26->Write();
+    fout26.Close();
+
+    fout27.cd();
+    h27->GetXaxis()->SetTitle("Ratio of Z vis to Z real");
+    h27->GetYaxis()->SetTitle("Entries");
+    h27->Write();
+    fout27.Close();
+
+    fout28.cd();
+    h28->GetXaxis()->SetTitle("Ratio of Z vis to Z real");
+    h28->GetYaxis()->SetTitle("Entries");
+    h28->Write();
+    fout28.Close();
+
+    fout29.cd();
+    h29->GetXaxis()->SetTitle("Ratio of Z vis to Z real");
+    h29->GetYaxis()->SetTitle("Entries");
+    h29->Write();
+    fout29.Close();
 
     return 0;
 }
