@@ -115,5 +115,18 @@ const std::vector<std::string> ALL_INPUTS = {
 
 };
 
+const std::vector<std::string> ALL_INPUTS_INT = {
+    "nBoson",
+    "nTauChargedPion",
+    "nTauNeutralPion",
+    "nTauPhoton",
+    "nTauTauNu",
+    "nAntiTauChargedPion",
+    "nAntiTauNeutralPion",
+    "nAntiTauPhoton",
+    "nAntiTauTauAntiNu",
+
+};
+
 // Binning(int _nBins, double _low, double _high):
 // nBins(_nBins), low(_low), high(_high) {};
