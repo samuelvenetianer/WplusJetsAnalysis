@@ -19,30 +19,8 @@
 
 // include binning and functions files
 #include "binning.cc"
-#include "MyFunctions.cc"
-
-// forward declaration of functions from MyFunctions.cc
-float hadhadTruthPsi(
-                TLorentzVector tau0_ch,  
-                TLorentzVector tau1_ch,  
-                TLorentzVector tau0_neut,   
-                TLorentzVector tau1_neut);
-
-const TLorentzVector COM_vis(
-                TLorentzVector tau0_ch,  
-                TLorentzVector tau1_ch,  
-                TLorentzVector tau0_neut,   
-                TLorentzVector tau1_neut);
-
-const TLorentzVector COM_real(
-                float tau_pt, 
-                float tau_eta,
-                float tau_phi,
-                float tau_E,
-                float antitau_pt,
-                float antitau_eta,
-                float antitau_phi,
-                float antitau_E);
+#include "MyFunctions.cc" // why need this included here?
+#include "MyFunctions.h"
 
 int main() {
 
@@ -80,7 +58,6 @@ int main() {
         std::cout << "----------" << input.c_str() << std::endl;
     }
 
-    // TRandom3 rand;  
     int nEntries = input_tree->GetEntries(); 
     int forceStop = 100;   
 
@@ -129,7 +106,6 @@ int main() {
                                 antitau_ch_pion_p4,
                                 tau_neut_pion_p4,
                                 antitau_neut_pion_p4
-
             );
 
             variablesByName["Z pT vis"] = COM_vis_p4.Pt();
@@ -171,17 +147,15 @@ int main() {
             std::cout << "ratio: " << variablesByName["Ratio ZpT vis to ZpT real"] << std::endl;
 
             // Fill hists for each variable
-            
+            std::cout << "Filling hists..." << std::endl;
             for (const std::string& output:ALL_OUTPUTS){                            // & means reference
-                std::cout << "Filling hist for: " << output << std::endl;
                 histsByName[output] -> Fill(variablesByName[output]);
             }
-        }
-            
+        }  
     }  
 
+    // Draw hists for each variable
     for (const std::string& output:ALL_OUTPUTS){
-        std::cout << "Drawing hist for: " << output << std::endl;
         TCanvas canv;
         histsByName[output] -> Draw();
         canv.Print(binningByVariable.at(output).title);

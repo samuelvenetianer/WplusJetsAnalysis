@@ -5,6 +5,8 @@
 #include<vector>
 #include<bits/stdc++.h>
 
+#include "MyFunctions.h"
+
 float hadhadTruthPsi(
                 TLorentzVector tau0_ch,  // tau0_matched_vis_p4
                 TLorentzVector tau1_ch,  // tau1_matched_vis_p4
