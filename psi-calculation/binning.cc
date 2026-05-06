@@ -25,39 +25,46 @@ struct Binning{
 };
 
 const std::map<std::string,Binning> binningByVariable = {
-    {"psi", {40, -3.14, 3.14, "psi_canvas_test.root", "#psi"}},
+    {"psi truth", {40, -3.14, 3.14, "hists/psi_canvas_test.root", "#psi"}},
 
-    {"Z pT vis", {40, 0, 100, "Z_pt_vis.root", "Z pT vis"}},
-    {"Z eta vis", {40, -4, 4, "Z_eta_vis.root", "Z #eta vis"}},
-    {"Z phi vis", {40, -3.14, 3.14, "Z_phi_vis.root", "Z #phi vis"}},
-    {"Z E vis", {40, 0, 1500, "Z_E_vis.root", "Z E vis"}},
+    {"Z pT vis", {40, 0, 100, "hists/Z_pt_vis.root", "Z pT vis"}},
+    {"Z eta vis", {40, -4, 4, "hists/Z_eta_vis.root", "Z #eta vis"}},
+    {"Z phi vis", {40, -3.14, 3.14, "hists/Z_phi_vis.root", "Z #phi vis"}},
+    {"Z E vis", {40, 0, 1500, "hists/Z_E_vis.root", "Z E vis"}},
 
-    {"Z px vis", {40, -50, 50, "Z_px_vis.root", "Z px vis"}},
-    {"Z py vis", {40, -50, 50, "Z_py_vis.root", "Z py vis"}},
-    {"Z pz vis", {40, -50, 50, "Z_pz_vis.root", "Z pz vis"}},
+    {"Z px vis", {40, -50, 50, "hists/Z_px_vis.root", "Z px vis"}},
+    {"Z py vis", {40, -50, 50, "hists/Z_py_vis.root", "Z py vis"}},
+    {"Z pz vis", {40, -50, 50, "hists/Z_pz_vis.root", "Z pz vis"}},
     
-    {"Z pT real", {40, 0, 100, "Z_pt_real.root", "Z pT real"}},
-    {"Z eta real", {40, -4, 4, "Z_eta_real.root", "Z #eta real"}},
-    {"Z phi real", {40, -3.14, 3.14, "Z_phi_real.root", "Z #phi real"}},
-    {"Z E real", {40, 0, 1500, "Z_E_real.root", "Z E real"}},
+    {"Z pT real", {40, 0, 100, "hists/Z_pt_real.root", "Z pT real"}},
+    {"Z eta real", {40, -4, 4, "hists/Z_eta_real.root", "Z #eta real"}},
+    {"Z phi real", {40, -3.14, 3.14, "hists/Z_phi_real.root", "Z #phi real"}},
+    {"Z E real", {40, 0, 1500, "hists/Z_E_real.root", "Z E real"}},
 
-    {"Z px real", {40, -50, 50, "Z_px_real.root", "Z px real"}},
-    {"Z py real", {40, -50, 50, "Z_py_real.root", "Z py real"}},
-    {"Z pz real", {40, -50, 50, "Z_pz_real.root", "Z pz real"}},
+    {"Z px real", {40, -50, 50, "hists/Z_px_real.root", "Z px real"}},
+    {"Z py real", {40, -50, 50, "hists/Z_py_real.root", "Z py real"}},
+    {"Z pz real", {40, -50, 50, "hists/Z_pz_real.root", "Z pz real"}},
 
-    // UPDATE
+    // UPDATE BINNING
 
-    {"Delta vis real Z px", {40, -3.14, 3.14, "d_vis_real_Zpx.root", "Delta vis real Z px"}},
-    {"Delta vis real Z py", {40, -3.14, 3.14, "d_vis_real_Zpy.root", "Delta vis real Z py"}},
-    {"Delta vis real Z pz", {40, -3.14, 3.14, "d_vis_real_Zpz.root", "Delta vis real Z pz"}},
+    {"Delta vis real Z px", {40, -3.14, 3.14, "hists/d_vis_real_Zpx.root", "Delta vis real Z px"}},
+    {"Delta vis real Z py", {40, -3.14, 3.14, "hists/d_vis_real_Zpy.root", "Delta vis real Z py"}},
+    {"Delta vis real Z pz", {40, -3.14, 3.14, "hists/d_vis_real_Zpz.root", "Delta vis real Z pz"}},
 
-    // UPDATE AND DEBUG
+    // Ratio troubleshooting
 
-    {"Ratio ZpT vis to ZpT real", {40, 0, 1, "ratio_zpt_vis_real.root", "Ratio ZpT vis to ZpT real"}},
+    {"Ratio Z pT visible to real", {40, 0, 1, "hists/ratio_zpt_vis_real.root", "Ratio Z pT visible to real"}},
+    {"Ratio Sum pT visible to real", {40, 0, 1, "hists/sum_pt_ratio.root", "Ratio Sum pT visible to real"}},
+    
+    {"Ratio for low pT real", {40, 0, 1, "hists/new_ratio_low.root", "Ratio pT visible products to pT all products for low real pT"}},
+    {"Ratio for high pT real", {40, 0, 1, "hists/new_ratio_high.root", "Ratio pT visible products to pT all products for high real pT"}},
+
+    {"Sum pT real", {40, 0, 100, "hists/sum_pt_real.root", "Sum pT real"}},
+    {"Sum pT vis", {40, 0, 100, "hists/sum_pt_vis.root", "Sum pT vis"}},
 };
 
 const std::vector<std::string> ALL_OUTPUTS = {
-    "psi", 
+    "psi truth", 
     "Z pT vis", 
     "Z eta vis", 
     "Z phi vis", 
@@ -74,7 +81,12 @@ const std::vector<std::string> ALL_OUTPUTS = {
     "Delta vis real Z px",
     "Delta vis real Z py",
     "Delta vis real Z pz",
-    "Ratio ZpT vis to ZpT real",
+    "Ratio Z pT visible to real",
+    "Ratio Sum pT visible to real",
+    "Ratio for low pT real",
+    "Ratio for high pT real",
+    "Sum pT real",
+    "Sum pT vis",
 };
 
 const std::vector<std::string> ALL_INPUTS = {
@@ -113,20 +125,56 @@ const std::vector<std::string> ALL_INPUTS = {
     "antitau_born_phi",
     "antitau_born_E",
 
+    "tau_taunu_pt",
+    "tau_taunu_eta",
+    "tau_taunu_phi",
+    "tau_taunu_E",
+
+    "antitau_tauantinu_pt",
+    "antitau_tauantinu_eta",
+    "antitau_tauantinu_phi",
+    "antitau_tauantinu_E",
+
 };
 
 const std::vector<std::string> ALL_INPUTS_INT = {
+    
+    // Multiplicity variables for 1p1n-1p1n
+    
     "nBoson",
+
+    "nTauBorn",
+    "nAntiTauBorn",
+
     "nTauChargedPion",
     "nTauNeutralPion",
     "nTauPhoton",
     "nTauTauNu",
+
     "nAntiTauChargedPion",
     "nAntiTauNeutralPion",
     "nAntiTauPhoton",
     "nAntiTauTauAntiNu",
 
+    // Other multiplicity variables
+    "nTauMuon",
+    "nTauMuonAntiNu",
+    "nTauMuonNu",
+    "nTauElectron",
+    "nTauElectronAntiNu",
+    "nTauElectronNu",
+    "nTauTauAntiNu",
+    "nTauKaonL",
+    "nTauKaonS",
+    "nTauKaon",
+    "nAntiTauMuon",
+    "nAntiTauMuonAntiNu",
+    "nAntiTauMuonNu",
+    "nAntiTauElectron",
+    "nAntiTauElectronAntiNu",
+    "nAntiTauElectronNu",
+    "nAntiTauTauNu",
+    "nAntiTauKaonL",
+    "nAntiTauKaonS",
+    "nAntiTauKaon",
 };
-
-// Binning(int _nBins, double _low, double _high):
-// nBins(_nBins), low(_low), high(_high) {};
