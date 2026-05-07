@@ -40,7 +40,7 @@ int main() {
     std::cout << "Creating empty hist for: " << std::endl;
     for (const std::string& output:ALL_OUTPUTS){                            // & means reference
         std::cout << "----------" << output << std::endl;
-        histsByName[output] = new TH1F("","", binningByVariable.at(output).nBins, binningByVariable.at(output).low, binningByVariable.at(output).high);
+        histsByName[output] = new TH1F(output.c_str(), output.c_str(), binningByVariable.at(output).nBins, binningByVariable.at(output).low, binningByVariable.at(output).high);
         histsByName[output] -> GetXaxis()->SetTitle(binningByVariable.at(output).xaxis);
         histsByName[output] -> GetYaxis()->SetTitle("Entries");
     }
@@ -58,10 +58,13 @@ int main() {
         std::cout << "----------" << input.c_str() << std::endl;
     }
 
-    // int nEntries = input_tree->GetEntries(); 
-    int nEntries = 100;   
+    int nEntries = input_tree->GetEntries(); 
+    // int nEntries = 100;   
 
     int n1p1nEvents = 0;
+    int low_events = 0;
+    int med_events = 0;
+    int high_events = 0;
 
     std::cout << "======Looping through events...======" << std::endl;
     for ( int i = 0 ; i < nEntries ; i++ ) {        
@@ -231,6 +234,28 @@ int main() {
                 variablesByName["Sum pT vis"] = sum_pt_vis;
                 variablesByName["Ratio Sum pT visible to real"] = sum_pt_vis/sum_pt_all;
 
+                // Fill ratio buckets depending on sum of pT of all decay products
+                if (sum_pt_all < 30){
+                    variablesByName["Ratio for low pT real"] = sum_pt_vis/sum_pt_all;
+                    low_events += 1;
+                    variablesByName["Ratio for med pT real"] = -1;
+                    variablesByName["Ratio for high pT real"] = -1;
+                }
+
+                else if ((sum_pt_all > 30) && (sum_pt_all < 60)){
+                    variablesByName["Ratio for med pT real"] = sum_pt_vis/sum_pt_all;
+                    med_events += 1;
+                    variablesByName["Ratio for low pT real"] = -1;
+                    variablesByName["Ratio for high pT real"] = -1;
+                }
+
+                else if (sum_pt_all > 60){
+                    variablesByName["Ratio for high pT real"] = sum_pt_vis/sum_pt_all;
+                    high_events += 1;
+                    variablesByName["Ratio for low pT real"] = -1;
+                    variablesByName["Ratio for med pT real"] = -1;
+                }
+
                 // Add neutrinos as a cross check for vis pT
 
                 TLorentzVector tau_nu_p4;
@@ -241,18 +266,6 @@ int main() {
 
                 TLorentzVector z_real_from_decay_prod_p4 = z_vis_p4 + tau_nu_p4 + antitau_nu_p4;
                 TLorentzVector neutrino_sum = tau_nu_p4 + antitau_nu_p4;
-
-                // Various print statements
-
-                // std::cout << "ZpT vis: " << z_vis_p4.Pt() << std::endl;
-                // std::cout << "COM with neutrinos: " << z_real_from_decay_prod_p4.Pt() << std::endl;
-                // std::cout << "neutrino sum: " << neutrino_sum.Pt() << std::endl;
-                // std::cout << "sum of pT of visible products: " << sum_pt_vis << std::endl;
-                // std::cout << "sum of pT of all products: " << sum_pt_all << std::endl;
-                // std::cout << "ZpT real: "<< z_real_p4.Pt() << std::endl;
-                // std::cout << "Boson pT: " << (*BUFFER_BY_INPUT["boson_pt"])[0] << std::endl;
-                // std::cout << "ratio: " << variablesByName["Ratio ZpT vis to ZpT real"] << std::endl;
-                // std::cout << "new ratio: " << variablesByName["New Ratio"] << std::endl;
 
                 // Fill hists for each variable
                 for (const std::string& output:ALL_OUTPUTS){                            // & means reference
@@ -265,12 +278,18 @@ int main() {
 
     // Draw hists for each variable
     for (const std::string& output:ALL_OUTPUTS){
-        TCanvas canv;
-        histsByName[output] -> Draw();
-        canv.Print(binningByVariable.at(output).title);
+        std::cout << binningByVariable.at(output).title << std::endl;
+        TFile fout(binningByVariable.at(output).title, "recreate");
+        fout.cd();
+        histsByName[output] -> Write();
+        fout.Close();
+        // canv.Print(binningByVariable.at(output).title);
     }     
 
-    std::cout << "\n" << n1p1nEvents << " events out of " << nEntries << " passed 1p1n-1p1n selection." << std::endl;            
+    std::cout << "\n" << n1p1nEvents << " events out of " << nEntries << " passed 1p1n-1p1n selection." << std::endl; 
+    std::cout << "\n" << "low: " <<  low_events << std::endl;   
+    std::cout << "\n" << "med: " <<  med_events << std::endl;      
+    std::cout << "\n" << "high: " <<  high_events << std::endl;               
 
     return 0;
 }

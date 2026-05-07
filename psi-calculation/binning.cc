@@ -27,7 +27,7 @@ struct Binning{
 const std::map<std::string,Binning> binningByVariable = {
     {"psi truth", {40, -3.14, 3.14, "hists/psi_canvas_test.root", "#psi"}},
 
-    {"Z pT vis", {40, 0, 100, "hists/Z_pt_vis.root", "Z pT vis"}},
+    {"Z pT vis", {40, 0, 50, "hists/Z_pt_vis.root", "Z pT vis"}},
     {"Z eta vis", {40, -4, 4, "hists/Z_eta_vis.root", "Z #eta vis"}},
     {"Z phi vis", {40, -3.14, 3.14, "hists/Z_phi_vis.root", "Z #phi vis"}},
     {"Z E vis", {40, 0, 1500, "hists/Z_E_vis.root", "Z E vis"}},
@@ -36,7 +36,7 @@ const std::map<std::string,Binning> binningByVariable = {
     {"Z py vis", {40, -50, 50, "hists/Z_py_vis.root", "Z py vis"}},
     {"Z pz vis", {40, -50, 50, "hists/Z_pz_vis.root", "Z pz vis"}},
     
-    {"Z pT real", {40, 0, 100, "hists/Z_pt_real.root", "Z pT real"}},
+    {"Z pT real", {40, 0, 50, "hists/Z_pt_real.root", "Z pT real"}},
     {"Z eta real", {40, -4, 4, "hists/Z_eta_real.root", "Z #eta real"}},
     {"Z phi real", {40, -3.14, 3.14, "hists/Z_phi_real.root", "Z #phi real"}},
     {"Z E real", {40, 0, 1500, "hists/Z_E_real.root", "Z E real"}},
@@ -56,8 +56,9 @@ const std::map<std::string,Binning> binningByVariable = {
     {"Ratio Z pT visible to real", {40, 0, 1, "hists/ratio_zpt_vis_real.root", "Ratio Z pT visible to real"}},
     {"Ratio Sum pT visible to real", {40, 0, 1, "hists/sum_pt_ratio.root", "Ratio Sum pT visible to real"}},
     
-    {"Ratio for low pT real", {40, 0, 1, "hists/new_ratio_low.root", "Ratio pT visible products to pT all products for low real pT"}},
-    {"Ratio for high pT real", {40, 0, 1, "hists/new_ratio_high.root", "Ratio pT visible products to pT all products for high real pT"}},
+    {"Ratio for low pT real", {40, 0, 1, "hists/ratio_low.root", "Ratio pT visible products to pT all products for low real pT"}},
+    {"Ratio for med pT real", {40, 0, 1, "hists/ratio_med.root", "Ratio pT visible products to pT all products for med real pT"}},
+    {"Ratio for high pT real", {40, 0, 1, "hists/ratio_high.root", "Ratio pT visible products to pT all products for high real pT"}},
 
     {"Sum pT real", {40, 0, 100, "hists/sum_pt_real.root", "Sum pT real"}},
     {"Sum pT vis", {40, 0, 100, "hists/sum_pt_vis.root", "Sum pT vis"}},
@@ -84,6 +85,7 @@ const std::vector<std::string> ALL_OUTPUTS = {
     "Ratio Z pT visible to real",
     "Ratio Sum pT visible to real",
     "Ratio for low pT real",
+    "Ratio for med pT real",
     "Ratio for high pT real",
     "Sum pT real",
     "Sum pT vis",
