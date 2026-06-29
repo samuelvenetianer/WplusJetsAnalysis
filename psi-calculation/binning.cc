@@ -1,20 +1,8 @@
-// binning for output variables
-
 #include<cstdio>
 #include<cstdlib>
 #include<iostream>
 #include<vector>
 #include<bits/stdc++.h>
-
-
-// link root header files
-// #include "TROOT.h"
-// #include "TTree.h"
-// #include "TFile.h"
-// #include "TRandom3.h"
-// #include "TLorentzVector.h"
-// #include "TVector3.h"
-// #include "TH1D.h"
 
 struct Binning{
     int nBins;
@@ -25,25 +13,35 @@ struct Binning{
 };
 
 const std::map<std::string,Binning> binningByVariable = {
-    {"psi truth", {40, -3.14, 3.14, "hists/psi_canvas_test.root", "#psi"}},
+    {"psi truth", {40, -3.14, 3.14, "hists/psi_truth.root", "#psi"}},
+    {"psi truth true boost", {40, -3.14, 3.14, "hists/psi_truth_true_boost.root", "#psi"}},
+    {"psi triggered", {40, -3.14, 3.14, "hists/psi_triggered.root", "#psi"}},
+   
+    {"psi low Z pT", {40, -3.14, 3.14, "hists/psi_low_z_pt.root", "#psi"}},
+    {"psi med Z pT", {40, -3.14, 3.14, "hists/psi_med_z_pt.root", "#psi"}},
+    {"psi high Z pT", {40, -3.14, 3.14, "hists/psi_high_z_pt.root", "#psi"}},
+
+    {"psi true boost low Z pT", {40, -3.14, 3.14, "hists/psi_trueboost_low_z_pt.root", "#psi"}},
+    {"psi true boost med Z pT", {40, -3.14, 3.14, "hists/psi_trueboost_med_z_pt.root", "#psi"}},
+    {"psi true boost high Z pT", {40, -3.14, 3.14, "hists/psi_trueboost_high_z_pt.root", "#psi"}},
 
     {"Z pT vis", {40, 0, 50, "hists/Z_pt_vis.root", "Z pT vis"}},
     {"Z eta vis", {40, -4, 4, "hists/Z_eta_vis.root", "Z #eta vis"}},
     {"Z phi vis", {40, -3.14, 3.14, "hists/Z_phi_vis.root", "Z #phi vis"}},
     {"Z E vis", {40, 0, 1500, "hists/Z_E_vis.root", "Z E vis"}},
 
-    {"Z px vis", {40, -50, 50, "hists/Z_px_vis.root", "Z px vis"}},
-    {"Z py vis", {40, -50, 50, "hists/Z_py_vis.root", "Z py vis"}},
-    {"Z pz vis", {40, -50, 50, "hists/Z_pz_vis.root", "Z pz vis"}},
+    {"Z px vis", {40, -100, 100, "hists/Z_px_vis.root", "Z px vis"}},
+    {"Z py vis", {40, -100, 100, "hists/Z_py_vis.root", "Z py vis"}},
+    {"Z pz vis", {40, -100, 100, "hists/Z_pz_vis.root", "Z pz vis"}},
     
     {"Z pT real", {40, 0, 50, "hists/Z_pt_real.root", "Z pT real"}},
     {"Z eta real", {40, -4, 4, "hists/Z_eta_real.root", "Z #eta real"}},
     {"Z phi real", {40, -3.14, 3.14, "hists/Z_phi_real.root", "Z #phi real"}},
     {"Z E real", {40, 0, 1500, "hists/Z_E_real.root", "Z E real"}},
 
-    {"Z px real", {40, -50, 50, "hists/Z_px_real.root", "Z px real"}},
-    {"Z py real", {40, -50, 50, "hists/Z_py_real.root", "Z py real"}},
-    {"Z pz real", {40, -50, 50, "hists/Z_pz_real.root", "Z pz real"}},
+    {"Z px real", {40, -100, 100, "hists/Z_px_real.root", "Z px real"}},
+    {"Z py real", {40, -100, 100, "hists/Z_py_real.root", "Z py real"}},
+    {"Z pz real", {40, -100, 100, "hists/Z_pz_real.root", "Z pz real"}},
 
     // UPDATE BINNING
 
@@ -62,10 +60,32 @@ const std::map<std::string,Binning> binningByVariable = {
 
     {"Sum pT real", {40, 0, 100, "hists/sum_pt_real.root", "Sum pT real"}},
     {"Sum pT vis", {40, 0, 100, "hists/sum_pt_vis.root", "Sum pT vis"}},
+
+    {"Z pT raw", {40, 0, 50, "hists/Z_pt_raw.root", "Z pT raw"}},
+    {"Z eta raw", {40, -4, 4, "hists/Z_eta_raw.root", "Z #eta raw"}},
+    {"Z phi raw", {40, -3.14, 3.14, "hists/Z_phi_raw.root", "Z #phi raw"}},
+    {"Z E raw", {40, 0, 1500, "hists/Z_E_raw.root", "Z E raw"}},
+
+    {"Z px raw", {40, -100, 100, "hists/Z_px_raw.root", "Z px raw"}},
+    {"Z py raw", {40, -100, 100, "hists/Z_py_raw.root", "Z py raw"}},
+    {"Z pz raw", {40, -100, 100, "hists/Z_pz_raw.root", "Z pz raw"}},
+
+    {"truth tau pt", {40, 0, 200, "hists/tau_pt.root", "Tau pT"}},
+    {"truth antitau pt", {40, 0, 200, "hists/antitau_pt.root", "Antitau pT"}},
+
+    {"truth tau pt 1p1n_1p1n", {40, 0, 200, "hists/tau_pt_1p1n_1p1n.root", "Tau pT 1p1n_1p1n"}},
+    {"truth antitau pt 1p1n_1p1n", {40, 0, 200, "hists/antitau_pt_1p1n_1p1n.root", "Antitau pT 1p1n_1p1n"}},
+
+    {"tau charged pion pt", {40, 0, 50, "hists/tau_ch_pion_pt.root", "Tau charged pion pT"}},
+    {"antitau charged pion pt", {40, 0, 50, "hists/antitau_ch_pion_pt.root", "Antitau charged pion pT"}},
+
+    {"tau neutral pion pt", {40, 0, 50, "hists/tau_neut_pion_pt.root", "Tau neutral pion pT"}},
+    {"antitau neutral pion pt", {40, 0, 50, "hists/antitau_neut_pion_pt.root", "Antitau neutral pion pT"}},
 };
 
 const std::vector<std::string> ALL_OUTPUTS = {
-    "psi truth", 
+    "psi truth",
+    "psi truth true boost", 
     "Z pT vis", 
     "Z eta vis", 
     "Z phi vis", 
@@ -89,6 +109,35 @@ const std::vector<std::string> ALL_OUTPUTS = {
     "Ratio for high pT real",
     "Sum pT real",
     "Sum pT vis",
+    
+    "Z pT raw",
+    "Z eta raw",
+    "Z phi raw",
+    "Z E raw",
+    "Z px raw",
+    "Z py raw",
+    "Z pz raw",
+
+    "psi triggered",
+    "psi low Z pT",
+    "psi med Z pT",
+    "psi high Z pT",
+
+    "psi true boost low Z pT",
+    "psi true boost med Z pT",
+    "psi true boost high Z pT",
+
+    "truth tau pt",
+    "truth antitau pt",
+
+    "truth tau pt 1p1n_1p1n",
+    "truth antitau pt 1p1n_1p1n",
+
+    "tau charged pion pt",
+    "antitau charged pion pt",
+
+    "tau neutral pion pt",
+    "antitau neutral pion pt",
 };
 
 const std::vector<std::string> ALL_INPUTS = {
@@ -180,3 +229,11 @@ const std::vector<std::string> ALL_INPUTS_INT = {
     "nAntiTauKaonS",
     "nAntiTauKaon",
 };
+
+const std::vector<std::string> ALL_INPUTS_VEC_INT = {
+    
+    // Variables formatted as vectors of integers
+
+    "boson_ID",
+};
+
