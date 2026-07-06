@@ -15,6 +15,13 @@ struct Binning{
 const std::map<std::string,Binning> binningByVariable = {
     {"psi truth", {40, -3.14, 3.14, "hists/psi_truth.root", "#psi"}},
     {"psi truth true boost", {40, -3.14, 3.14, "hists/psi_truth_true_boost.root", "#psi"}},
+    {"psi truth true boost rho plane", {40, -3.14, 3.14, "hists/psi_truth_true_boost_rho_plane.root", "#psi"}},
+
+    {"psi YP low YM low", {40, -3.14, 3.14, "hists/psi_truth_yp_low_ym_low.root", "#psi"}},
+    {"psi YP low YM high", {40, -3.14, 3.14, "hists/psi_truth_yp_low_ym_high.root", "#psi"}},
+    {"psi YP high YM low", {40, -3.14, 3.14, "hists/psi_truth_yp_high_ym_low.root", "#psi"}},
+    {"psi YP high YM high", {40, -3.14, 3.14, "hists/psi_truth_yp_high_ym_high.root", "#psi"}},
+
     {"psi triggered", {40, -3.14, 3.14, "hists/psi_triggered.root", "#psi"}},
    
     {"psi low Z pT", {40, -3.14, 3.14, "hists/psi_low_z_pt.root", "#psi"}},
@@ -42,8 +49,6 @@ const std::map<std::string,Binning> binningByVariable = {
     {"Z px real", {40, -100, 100, "hists/Z_px_real.root", "Z px real"}},
     {"Z py real", {40, -100, 100, "hists/Z_py_real.root", "Z py real"}},
     {"Z pz real", {40, -100, 100, "hists/Z_pz_real.root", "Z pz real"}},
-
-    // UPDATE BINNING
 
     {"Delta vis real Z px", {40, -3.14, 3.14, "hists/d_vis_real_Zpx.root", "Delta vis real Z px"}},
     {"Delta vis real Z py", {40, -3.14, 3.14, "hists/d_vis_real_Zpy.root", "Delta vis real Z py"}},
@@ -81,11 +86,25 @@ const std::map<std::string,Binning> binningByVariable = {
 
     {"tau neutral pion pt", {40, 0, 50, "hists/tau_neut_pion_pt.root", "Tau neutral pion pT"}},
     {"antitau neutral pion pt", {40, 0, 50, "hists/antitau_neut_pion_pt.root", "Antitau neutral pion pT"}},
+
+    {"upsilon minus", {40, 0, 1, "hists/upsilon_minus.root", "Upsilon Minus"}},
+    {"upsilon plus", {40, 0, 1, "hists/upsilon_plus.root", "Upsilon Plus"}},
+
+    {"upsilon minus higgs", {40, -1, 1, "hists/upsilon_minus_higgs.root", "Upsilon Minus"}},
+    {"upsilon plus higgs", {40, -1, 1, "hists/upsilon_plus_higgs.root", "Upsilon Plus"}},
+
 };
 
 const std::vector<std::string> ALL_OUTPUTS = {
     "psi truth",
     "psi truth true boost", 
+    "psi truth true boost rho plane",
+    
+    "psi YP low YM low",
+    "psi YP low YM high",
+    "psi YP high YM low",
+    "psi YP high YM high",
+
     "Z pT vis", 
     "Z eta vis", 
     "Z phi vis", 
@@ -138,6 +157,12 @@ const std::vector<std::string> ALL_OUTPUTS = {
 
     "tau neutral pion pt",
     "antitau neutral pion pt",
+
+    "upsilon minus",
+    "upsilon plus",
+
+    "upsilon minus higgs",
+    "upsilon plus higgs",
 };
 
 const std::vector<std::string> ALL_INPUTS = {

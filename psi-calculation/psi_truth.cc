@@ -27,7 +27,7 @@ int main() {
     // Specify input file
 
     std::cout << "Calling input file..." << std::endl;
-    TFile f("/cluster/tufts/beaucheminlab/svenet01/WplusJetsAnalysis/pythia-outputs/2025/onemil_1p1n_isr_fsr_062526.root"); 
+    TFile f("/cluster/tufts/beaucheminlab/svenet01/WplusJetsAnalysis/pythia-outputs/2025/v3_070226.root"); 
     TTree *input_tree = (TTree*)f.Get("ParticleTree");
     
     std::cout << "Initializing maps..." << std::endl;
@@ -84,25 +84,32 @@ int main() {
 
     int tau_count = 0;
 
+    float remainder = 0;
+
     std::cout << "======Looping through events...======" << std::endl;
     for ( int i = 0 ; i < nEntries ; i++ ) {        
         
+        remainder = i % 100000;
+        if (remainder == 0){
+            std::cout << "Events processed: " << i << std::endl;
+        }
+
         input_tree->GetEvent(i);
         // std::cout <<  "Number of taus: " << BUFFER_BY_INPUT_INT["nTauBorn"] << std::endl;
         // std::cout <<  "Number of antitaus: " << BUFFER_BY_INPUT_INT["nAntiTauBorn"] << std::endl;
         // std::cout <<  "Number of bosons: " << BUFFER_BY_INPUT_INT["nBoson"] << std::endl;
         tau_count += 1;
 
-        if (((BUFFER_BY_INPUT_INT["nTauBorn"]) == 1) && ((BUFFER_BY_INPUT_INT["nAntiTauBorn"]) == 1) && ((*BUFFER_BY_INPUT_VEC_INT["boson_ID"])[0] == 23) ){
-            variablesByName["truth tau pt"] = (*BUFFER_BY_INPUT["tau_born_pt"])[0];
-            variablesByName["truth antitau pt"] = (*BUFFER_BY_INPUT["antitau_born_pt"])[0];
-        }
-        else{
-            std::cout << "No double taus or wrong boson" << std::endl;
-        }
+        // if (((BUFFER_BY_INPUT_INT["nTauBorn"]) == 1) && ((BUFFER_BY_INPUT_INT["nAntiTauBorn"]) == 1) && ((*BUFFER_BY_INPUT_VEC_INT["boson_ID"])[0] == 23) ){
+        //     variablesByName["truth tau pt"] = (*BUFFER_BY_INPUT["tau_born_pt"])[0];
+        //     variablesByName["truth antitau pt"] = (*BUFFER_BY_INPUT["antitau_born_pt"])[0];
+        // }
+        // else{
+        //     std::cout << "No double taus or wrong boson" << std::endl;
+        // }
         
         // Complete calculations
-        if (((*BUFFER_BY_INPUT_VEC_INT["boson_ID"]).size() == 1) && ((*BUFFER_BY_INPUT_VEC_INT["boson_ID"])[0] == 23) && ((BUFFER_BY_INPUT_INT["nTauBorn"]) == 1) && ((BUFFER_BY_INPUT_INT["nAntiTauBorn"]) == 1) && ((BUFFER_BY_INPUT_INT["nTauChargedPion"]) == 1) && ((BUFFER_BY_INPUT_INT["nTauPhoton"]) == 2) && ((BUFFER_BY_INPUT_INT["nAntiTauChargedPion"]) == 1) && ((BUFFER_BY_INPUT_INT["nAntiTauPhoton"]) == 2) && ((BUFFER_BY_INPUT_INT["nTauTauNu"]) == 1) && ((BUFFER_BY_INPUT_INT["nAntiTauTauAntiNu"]) == 1)) {
+        if (((*BUFFER_BY_INPUT_VEC_INT["boson_ID"]).size() == 1) && ((*BUFFER_BY_INPUT_VEC_INT["boson_ID"])[0] == 23) && ((BUFFER_BY_INPUT_INT["nTauBorn"]) == 1) && ((BUFFER_BY_INPUT_INT["nAntiTauBorn"]) == 1) && ((BUFFER_BY_INPUT_INT["nTauChargedPion"]) == 1) && ((BUFFER_BY_INPUT_INT["nTauPhoton"]) == 2) && ((BUFFER_BY_INPUT_INT["nAntiTauChargedPion"]) == 1) && ((BUFFER_BY_INPUT_INT["nAntiTauPhoton"]) == 2) && ((BUFFER_BY_INPUT_INT["nTauTauNu"]) == 1) && ((BUFFER_BY_INPUT_INT["nAntiTauTauAntiNu"]) == 1) && ((*BUFFER_BY_INPUT["tau_born_pt"])[0] > 25) && ((*BUFFER_BY_INPUT["antitau_born_pt"])[0] > 25)) {
             // std::cout << "Event passes 1p1n-1p1n selection!" << std::endl;
 
             // Check to make sure there aren't any other decay produts
@@ -249,6 +256,137 @@ int main() {
                                                 (*BUFFER_BY_INPUT["antitau_born_phi"])[0],
                                                 (*BUFFER_BY_INPUT["antitau_born_E"])[0]
                                                 );
+
+                variablesByName["psi truth true boost rho plane"] = TruthPsiHadHadTrueBoostRhoPlane(
+                                                (*BUFFER_BY_INPUT["tau_charged_pion_pt"])[0],
+                                                (*BUFFER_BY_INPUT["tau_charged_pion_eta"])[0],
+                                                (*BUFFER_BY_INPUT["tau_charged_pion_phi"])[0],
+                                                (*BUFFER_BY_INPUT["tau_charged_pion_E"])[0],
+
+                                                (*BUFFER_BY_INPUT["antitau_charged_pion_pt"])[0],
+                                                (*BUFFER_BY_INPUT["antitau_charged_pion_eta"])[0],
+                                                (*BUFFER_BY_INPUT["antitau_charged_pion_phi"])[0],
+                                                (*BUFFER_BY_INPUT["antitau_charged_pion_E"])[0],
+
+                                                tau_neut_pion_p4.Pt(),
+                                                tau_neut_pion_p4.Eta(),
+                                                tau_neut_pion_p4.Phi(),
+                                                tau_neut_pion_p4.E(),
+
+                                                antitau_neut_pion_p4.Pt(),
+                                                antitau_neut_pion_p4.Eta(),
+                                                antitau_neut_pion_p4.Phi(),
+                                                antitau_neut_pion_p4.E(),
+
+                                                (*BUFFER_BY_INPUT["tau_taunu_pt"])[0],
+                                                (*BUFFER_BY_INPUT["tau_taunu_eta"])[0],
+                                                (*BUFFER_BY_INPUT["tau_taunu_phi"])[0],
+                                                (*BUFFER_BY_INPUT["tau_taunu_E"])[0],
+
+                                                (*BUFFER_BY_INPUT["antitau_tauantinu_pt"])[0],
+                                                (*BUFFER_BY_INPUT["antitau_tauantinu_eta"])[0],
+                                                (*BUFFER_BY_INPUT["antitau_tauantinu_phi"])[0],
+                                                (*BUFFER_BY_INPUT["antitau_tauantinu_E"])[0],
+
+                                                (*BUFFER_BY_INPUT["boson_pt"])[0],
+                                                (*BUFFER_BY_INPUT["boson_eta"])[0],
+                                                (*BUFFER_BY_INPUT["boson_phi"])[0],
+                                                (*BUFFER_BY_INPUT["boson_E"])[0],
+
+                                                (*BUFFER_BY_INPUT["tau_born_pt"])[0],
+                                                (*BUFFER_BY_INPUT["tau_born_eta"])[0],
+                                                (*BUFFER_BY_INPUT["tau_born_phi"])[0],
+                                                (*BUFFER_BY_INPUT["tau_born_E"])[0],
+
+                                                (*BUFFER_BY_INPUT["antitau_born_pt"])[0],
+                                                (*BUFFER_BY_INPUT["antitau_born_eta"])[0],
+                                                (*BUFFER_BY_INPUT["antitau_born_phi"])[0],
+                                                (*BUFFER_BY_INPUT["antitau_born_E"])[0]
+                                                );
+
+                variablesByName["upsilon minus"] = Upsilon(
+                    (*BUFFER_BY_INPUT["tau_charged_pion_pt"])[0],
+                    (*BUFFER_BY_INPUT["tau_charged_pion_eta"])[0],
+                    (*BUFFER_BY_INPUT["tau_charged_pion_phi"])[0],
+                    (*BUFFER_BY_INPUT["tau_charged_pion_E"])[0],
+
+                    tau_neut_pion_p4.Pt(),
+                    tau_neut_pion_p4.Eta(),
+                    tau_neut_pion_p4.Phi(),
+                    tau_neut_pion_p4.E()
+                );
+
+                 variablesByName["upsilon plus"] = Upsilon(
+                    (*BUFFER_BY_INPUT["antitau_charged_pion_pt"])[0],
+                    (*BUFFER_BY_INPUT["antitau_charged_pion_eta"])[0],
+                    (*BUFFER_BY_INPUT["antitau_charged_pion_phi"])[0],
+                    (*BUFFER_BY_INPUT["antitau_charged_pion_E"])[0],
+
+                    antitau_neut_pion_p4.Pt(),
+                    antitau_neut_pion_p4.Eta(),
+                    antitau_neut_pion_p4.Phi(),
+                    antitau_neut_pion_p4.E()
+                );
+
+                variablesByName["upsilon minus higgs"] = UpsilonHiggs(
+                    (*BUFFER_BY_INPUT["tau_charged_pion_pt"])[0],
+                    (*BUFFER_BY_INPUT["tau_charged_pion_eta"])[0],
+                    (*BUFFER_BY_INPUT["tau_charged_pion_phi"])[0],
+                    (*BUFFER_BY_INPUT["tau_charged_pion_E"])[0],
+
+                    tau_neut_pion_p4.Pt(),
+                    tau_neut_pion_p4.Eta(),
+                    tau_neut_pion_p4.Phi(),
+                    tau_neut_pion_p4.E()
+                );
+
+                 variablesByName["upsilon plus higgs"] = UpsilonHiggs(
+                    (*BUFFER_BY_INPUT["antitau_charged_pion_pt"])[0],
+                    (*BUFFER_BY_INPUT["antitau_charged_pion_eta"])[0],
+                    (*BUFFER_BY_INPUT["antitau_charged_pion_phi"])[0],
+                    (*BUFFER_BY_INPUT["antitau_charged_pion_E"])[0],
+
+                    antitau_neut_pion_p4.Pt(),
+                    antitau_neut_pion_p4.Eta(),
+                    antitau_neut_pion_p4.Phi(),
+                    antitau_neut_pion_p4.E()
+                );
+
+                if ((variablesByName["upsilon plus"] < 0.5) && (variablesByName["upsilon minus"] < 0.5)){
+                    variablesByName["psi YP low YM low"] = variablesByName["psi truth"];
+                    
+                    variablesByName["psi YP low YM high"] = -1000;
+                    variablesByName["psi YP high YM low"] = -1000;
+                    variablesByName["psi YP high YM high"] = -1000;
+                }
+                else if ((variablesByName["upsilon plus"] < 0.5) && (variablesByName["upsilon minus"] > 0.5)){
+                    variablesByName["psi YP low YM high"] = variablesByName["psi truth"];
+                    
+                    variablesByName["psi YP low YM low"] = -1000;
+                    variablesByName["psi YP high YM low"] = -1000;
+                    variablesByName["psi YP high YM high"] = -1000;
+                }
+                else if ((variablesByName["upsilon plus"] > 0.5) && (variablesByName["upsilon minus"] < 0.5)){
+                    variablesByName["psi YP high YM low"] = variablesByName["psi truth"];
+
+                    variablesByName["psi YP low YM low"] = -1000;
+                    variablesByName["psi YP low YM high"] = -1000;
+                    variablesByName["psi YP high YM high"] = -1000;
+                }
+                else if ((variablesByName["upsilon plus"] > 0.5) && (variablesByName["upsilon minus"] > 0.5)){
+                    variablesByName["psi YP high YM high"] = variablesByName["psi truth"];
+
+                    variablesByName["psi YP low YM low"] = -1000;
+                    variablesByName["psi YP low YM high"] = -1000;
+                    variablesByName["psi YP high YM low"] = -1000;
+                }
+                else{
+                    variablesByName["psi YP low YM low"] = -1000;
+                    variablesByName["psi YP low YM high"] = -1000;
+                    variablesByName["psi YP high YM low"] = -1000;
+                    variablesByName["psi YP high YM high"] = -1000;
+                }
+
 
                 // std::cout << "psi value: " << variablesByName["psi"] << std::endl;
 
@@ -406,15 +544,16 @@ int main() {
                 TLorentzVector neutrino_sum = tau_nu_p4 + antitau_nu_p4;
 
                 // Fill hists for each variable for 1p1n events only
-                for (const std::string& output:ALL_OUTPUTS){                            // & means reference
-                    if ((output == "truth tau pt") || (output == "truth antitau pt")){
-                        // std::cout << "skip!" << std::endl;
-                        continue;
-                    }
-                    else{
-                        // std::cout << output << ": " << variablesByName[output] << std::endl;
-                        histsByName[output] -> Fill(variablesByName[output]);
-                    }
+                for (const std::string& output:ALL_OUTPUTS){ 
+                    histsByName[output] -> Fill(variablesByName[output]);                           // & means reference
+                    // if ((output == "truth tau pt") || (output == "truth antitau pt")){
+                    //     // std::cout << "skip!" << std::endl;
+                    //     continue;
+                    // }
+                    // else{
+                    //     // std::cout << output << ": " << variablesByName[output] << std::endl;
+                    //     histsByName[output] -> Fill(variablesByName[output]);
+                    // }
                 }
             }
 
