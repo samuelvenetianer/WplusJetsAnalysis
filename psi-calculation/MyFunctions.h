@@ -139,18 +139,6 @@ const TLorentzVector ZedVis(
                 float antitau_n_E
                 );
 
-const TLorentzVector ZedReal(
-                float tau_pt, 
-                float tau_eta,
-                float tau_phi,
-                float tau_E,
-                
-                float antitau_pt,
-                float antitau_eta,
-                float antitau_phi,
-                float antitau_E
-                );
-
 float Upsilon(
                 float tau_ch_pt,  // tau charged pion
                 float tau_ch_eta,

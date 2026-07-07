@@ -428,30 +428,6 @@ const TLorentzVector ZedVis(
 
 }
 
-const TLorentzVector ZedReal(
-                float tau_pt, 
-                float tau_eta,
-                float tau_phi,
-                float tau_E,
-                
-                float antitau_pt,
-                float antitau_eta,
-                float antitau_phi,
-                float antitau_E
-                ){
-
-    TLorentzVector tau_p4;
-    TLorentzVector antitau_p4;
-
-    tau_p4.SetPtEtaPhiE(tau_pt, tau_eta, tau_phi, tau_E);
-    antitau_p4.SetPtEtaPhiE(antitau_pt, antitau_eta, antitau_phi, antitau_E);
-
-    const TLorentzVector z_real = tau_p4 + antitau_p4;
-
-    return z_real;
-
-}
-
 float Upsilon(
                 float tau_ch_pt,  // tau charged pion
                 float tau_ch_eta,
