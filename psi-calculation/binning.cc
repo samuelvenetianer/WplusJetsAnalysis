@@ -14,6 +14,8 @@ struct Binning{
 
 const std::map<std::string,Binning> binningByVariable = {
     {"psi truth", {40, -3.14, 3.14, "hists/psi_truth.root", "#psi"}},
+    {"psi truth bump", {40, -3.14, 3.14, "hists/psi_truth_bump.root", "#psi"}},
+    {"psi diff", {40, -10, 10, "hists/psi_diff.root", "#psi diff"}},
     {"psi truth true boost", {40, -3.14, 3.14, "hists/psi_truth_true_boost.root", "#psi"}},
     {"psi truth true boost rho plane", {40, -3.14, 3.14, "hists/psi_truth_true_boost_rho_plane.root", "#psi"}},
 
@@ -26,6 +28,10 @@ const std::map<std::string,Binning> binningByVariable = {
     {"psi med Z pT", {40, -3.14, 3.14, "hists/psi_med_z_pt.root", "#psi"}},
     {"psi high Z pT", {40, -3.14, 3.14, "hists/psi_high_z_pt.root", "#psi"}},
 
+    {"psi bump low Z pT", {40, -3.14, 3.14, "hists/psi_bump_low_z_pt.root", "#psi"}},
+    {"psi bump med Z pT", {40, -3.14, 3.14, "hists/psi_bump_med_z_pt.root", "#psi"}},
+    {"psi bump high Z pT", {40, -3.14, 3.14, "hists/psi_bump_high_z_pt.root", "#psi"}},
+
     {"psi true boost low Z pT", {40, -3.14, 3.14, "hists/psi_trueboost_low_z_pt.root", "#psi"}},
     {"psi true boost med Z pT", {40, -3.14, 3.14, "hists/psi_trueboost_med_z_pt.root", "#psi"}},
     {"psi true boost high Z pT", {40, -3.14, 3.14, "hists/psi_trueboost_high_z_pt.root", "#psi"}},
@@ -34,28 +40,41 @@ const std::map<std::string,Binning> binningByVariable = {
     {"Z eta vis", {40, -4, 4, "hists/Z_eta_vis.root", "Z #eta vis"}},
     {"Z phi vis", {40, -3.14, 3.14, "hists/Z_phi_vis.root", "Z #phi vis"}},
     {"Z E vis", {40, 0, 1500, "hists/Z_E_vis.root", "Z E vis"}},
-
-    {"Z px vis", {40, -100, 100, "hists/Z_px_vis.root", "Z px vis"}},
-    {"Z py vis", {40, -100, 100, "hists/Z_py_vis.root", "Z py vis"}},
-    {"Z pz vis", {40, -100, 100, "hists/Z_pz_vis.root", "Z pz vis"}},
     
     {"Z pT real", {40, 0, 50, "hists/Z_pt_real.root", "Z pT real"}},
     {"Z eta real", {40, -4, 4, "hists/Z_eta_real.root", "Z #eta real"}},
     {"Z phi real", {40, -3.14, 3.14, "hists/Z_phi_real.root", "Z #phi real"}},
     {"Z E real", {40, 0, 1500, "hists/Z_E_real.root", "Z E real"}},
 
-    {"Z px real", {40, -100, 100, "hists/Z_px_real.root", "Z px real"}},
-    {"Z py real", {40, -100, 100, "hists/Z_py_real.root", "Z py real"}},
-    {"Z pz real", {40, -100, 100, "hists/Z_pz_real.root", "Z pz real"}},
-
     {"truth tau pt", {40, 0, 200, "hists/tau_pt.root", "Tau pT"}},
+    {"truth tau eta", {40, -4, 4, "hists/tau_eta.root", "Tau eta"}},
+    {"truth tau phi", {40, -3.14, 3.14, "hists/tau_phi.root", "Tau phi"}},
+    {"truth tau E", {40, 0, 1500, "hists/tau_E.root", "Tau E"}},
+
     {"truth antitau pt", {40, 0, 200, "hists/antitau_pt.root", "Antitau pT"}},
+    {"truth antitau eta", {40, -4, 4, "hists/antitau_eta.root", "Antitau eta"}},
+    {"truth antitau phi", {40, -3.14, 3.14, "hists/antitau_phi.root", "Antitau phi"}},
+    {"truth antitau E", {40, 0, 1500, "hists/antitau_E.root", "Antitau E"}},
 
     {"tau charged pion pt", {40, 0, 50, "hists/tau_ch_pion_pt.root", "Tau charged pion pT"}},
+    {"tau charged pion eta", {40, -4, 4, "hists/tau_ch_pion_eta.root", "Tau charged pion eta"}},
+    {"tau charged pion phi", {40, -3.14, 3.14, "hists/tau_ch_pion_phi.root", "Tau charged pion phi"}},
+    {"tau charged pion E", {40, 0, 1500, "hists/tau_ch_pion_E.root", "Tau charged pion E"}},
+
     {"antitau charged pion pt", {40, 0, 50, "hists/antitau_ch_pion_pt.root", "Antitau charged pion pT"}},
+    {"antitau charged pion eta", {40, -4, 4, "hists/antitau_ch_pion_eta.root", "Antitau charged pion eta"}},
+    {"antitau charged pion phi", {40, -3.14, 3.14, "hists/antitau_ch_pion_phi.root", "Antitau charged pion phi"}},
+    {"antitau charged pion E", {40, 0, 1500, "hists/antitau_ch_pion_E.root", "Antitau charged pion E"}},
 
     {"tau neutral pion pt", {40, 0, 50, "hists/tau_neut_pion_pt.root", "Tau neutral pion pT"}},
+    {"tau neutral pion eta", {40, -4, 4, "hists/tau_ch_pion_eta.root", "Tau neutral pion eta"}},
+    {"tau neutral pion phi", {40, -3.14, 3.14, "hists/tau_ch_pion_phi.root", "Tau neutral pion phi"}},
+    {"tau neutral pion E", {40, 0, 1500, "hists/tau_ch_pion_E.root", "Tau neutral pion E"}},
+
     {"antitau neutral pion pt", {40, 0, 50, "hists/antitau_neut_pion_pt.root", "Antitau neutral pion pT"}},
+    {"antitau neutral pion eta", {40, -4, 4, "hists/antitau_ch_pion_eta.root", "Antitau neutral pion eta"}},
+    {"antitau neutral pion phi", {40, -3.14, 3.14, "hists/antitau_ch_pion_phi.root", "Antitau neutral pion phi"}},
+    {"antitau neutral pion E", {40, 0, 1500, "hists/antitau_ch_pion_E.root", "Antitau neutral pion E"}},
 
     {"upsilon minus", {40, 0, 1, "hists/upsilon_minus.root", "Upsilon Minus"}},
     {"upsilon plus", {40, 0, 1, "hists/upsilon_plus.root", "Upsilon Plus"}},
@@ -67,6 +86,8 @@ const std::map<std::string,Binning> binningByVariable = {
 
 const std::vector<std::string> ALL_OUTPUTS = {
     "psi truth",
+    "psi truth bump",
+    "psi diff",
     "psi truth true boost", 
     "psi truth true boost rho plane",
     
@@ -78,21 +99,19 @@ const std::vector<std::string> ALL_OUTPUTS = {
     "Z pT vis", 
     "Z eta vis", 
     "Z phi vis", 
-    "Z px vis",
-    "Z py vis",
-    "Z pz vis",
 
     "Z pT real",
     "Z eta real",
     "Z phi real",
     "Z E real",
-    "Z px real",
-    "Z py real",
-    "Z pz real",
 
     "psi low Z pT",
     "psi med Z pT",
     "psi high Z pT",
+
+    "psi bump low Z pT",
+    "psi bump med Z pT",
+    "psi bump high Z pT",
 
     "psi true boost low Z pT",
     "psi true boost med Z pT",
@@ -102,10 +121,24 @@ const std::vector<std::string> ALL_OUTPUTS = {
     "truth antitau pt",
 
     "tau charged pion pt",
+    "tau charged pion eta",
+    "tau charged pion phi",
+    "tau charged pion E",
+
     "antitau charged pion pt",
+    "antitau charged pion eta",
+    "antitau charged pion phi",
+    "antitau charged pion E",
 
     "tau neutral pion pt",
+    "tau neutral pion eta",
+    "tau neutral pion phi",
+    "tau neutral pion E",
+
     "antitau neutral pion pt",
+    "antitau neutral pion eta",
+    "antitau neutral pion phi",
+    "antitau neutral pion E",
 
     "upsilon minus",
     "upsilon plus",
@@ -159,6 +192,10 @@ const std::vector<std::string> ALL_INPUTS = {
     "antitau_tauantinu_eta",
     "antitau_tauantinu_phi",
     "antitau_tauantinu_E",
+
+    "plus_bump_px",
+    "plus_bump_py",
+    "plus_bump_pz",
 
 };
 

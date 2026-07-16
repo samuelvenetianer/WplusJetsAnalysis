@@ -30,7 +30,7 @@ int main() {
     // Specify input file
 
     std::cout << "Calling input file..." << std::endl;
-    TFile f("/cluster/tufts/beaucheminlab/svenet01/WplusJetsAnalysis/pythia-outputs/2025/v3_070226.root"); 
+    TFile f("/cluster/tufts/beaucheminlab/svenet01/WplusJetsAnalysis/pythia-outputs/2025/onemil_071426.root"); 
     TTree *input_tree = (TTree*)f.Get("ParticleTree");
     
     std::cout << "Initializing maps..." << std::endl;
@@ -159,10 +159,34 @@ int main() {
                 antitau_neut_pion_p4 = antitau_photon1_p4 + antitau_photon2_p4;
 
                 variablesByName["tau neutral pion pt"] = tau_neut_pion_p4.Pt();
+                variablesByName["tau neutral pion eta"] = tau_neut_pion_p4.Eta();
+                variablesByName["tau neutral pion phi"] = tau_neut_pion_p4.Phi();
+                variablesByName["tau neutral pion E"] = tau_neut_pion_p4.E();
+
                 variablesByName["antitau neutral pion pt"] = antitau_neut_pion_p4.Pt();
+                variablesByName["antitau neutral pion eta"] = antitau_neut_pion_p4.Eta();
+                variablesByName["antitau neutral pion phi"] = antitau_neut_pion_p4.Phi();
+                variablesByName["antitau neutral pion E"] = antitau_neut_pion_p4.E();
 
                 variablesByName["tau charged pion pt"] = (*BUFFER_BY_INPUT["tau_charged_pion_pt"])[0];
+                variablesByName["tau charged pion eta"] = (*BUFFER_BY_INPUT["tau_charged_pion_eta"])[0];
+                variablesByName["tau charged pion phi"] = (*BUFFER_BY_INPUT["tau_charged_pion_phi"])[0];
+                variablesByName["tau charged pion E"] = (*BUFFER_BY_INPUT["tau_charged_pion_E"])[0];
+
                 variablesByName["antitau charged pion pt"] = (*BUFFER_BY_INPUT["antitau_charged_pion_pt"])[0];
+                variablesByName["antitau charged pion eta"] = (*BUFFER_BY_INPUT["antitau_charged_pion_eta"])[0];
+                variablesByName["antitau charged pion phi"] = (*BUFFER_BY_INPUT["antitau_charged_pion_phi"])[0];
+                variablesByName["antitau charged pion E"] = (*BUFFER_BY_INPUT["antitau_charged_pion_E"])[0];
+
+                variablesByName["truth tau pt"] = (*BUFFER_BY_INPUT["tau_born_pt"])[0];
+                variablesByName["truth tau eta"] = (*BUFFER_BY_INPUT["tau_born_eta"])[0];
+                variablesByName["truth tau phi"] = (*BUFFER_BY_INPUT["tau_born_phi"])[0];
+                variablesByName["truth tau E"] = (*BUFFER_BY_INPUT["tau_born_E"])[0];
+
+                variablesByName["truth antitau pt"] = (*BUFFER_BY_INPUT["antitau_born_pt"])[0];
+                variablesByName["truth antitau eta"] = (*BUFFER_BY_INPUT["antitau_born_eta"])[0];
+                variablesByName["truth antitau phi"] = (*BUFFER_BY_INPUT["antitau_born_phi"])[0];
+                variablesByName["truth antitau E"] = (*BUFFER_BY_INPUT["antitau_born_E"])[0];
 
                 // Calculate psi and other relevant quantities
 
@@ -187,6 +211,35 @@ int main() {
                                                 antitau_neut_pion_p4.Phi(),
                                                 antitau_neut_pion_p4.E()
                                                 );
+
+                variablesByName["psi truth bump"] = TruthPsiHadHadBump(
+                                                (*BUFFER_BY_INPUT["tau_charged_pion_pt"])[0],
+                                                (*BUFFER_BY_INPUT["tau_charged_pion_eta"])[0],
+                                                (*BUFFER_BY_INPUT["tau_charged_pion_phi"])[0],
+                                                (*BUFFER_BY_INPUT["tau_charged_pion_E"])[0],
+
+                                                (*BUFFER_BY_INPUT["antitau_charged_pion_pt"])[0],
+                                                (*BUFFER_BY_INPUT["antitau_charged_pion_eta"])[0],
+                                                (*BUFFER_BY_INPUT["antitau_charged_pion_phi"])[0],
+                                                (*BUFFER_BY_INPUT["antitau_charged_pion_E"])[0],
+
+                                                tau_neut_pion_p4.Pt(),
+                                                tau_neut_pion_p4.Eta(),
+                                                tau_neut_pion_p4.Phi(),
+                                                tau_neut_pion_p4.E(),
+
+                                                antitau_neut_pion_p4.Pt(),
+                                                antitau_neut_pion_p4.Eta(),
+                                                antitau_neut_pion_p4.Phi(),
+                                                antitau_neut_pion_p4.E(),
+
+                                                (*BUFFER_BY_INPUT["plus_bump_px"])[0],
+                                                (*BUFFER_BY_INPUT["plus_bump_py"])[0],
+                                                (*BUFFER_BY_INPUT["plus_bump_pz"])[0]
+                                                );
+
+                variablesByName["psi diff"] = variablesByName["psi truth"]-variablesByName["psi truth bump"];
+                // std::cout << "psi diff: " << variablesByName["psi diff"] << std::endl;
 
                 variablesByName["psi truth true boost"] = TruthPsiHadHadTrueBoost(
                                                 (*BUFFER_BY_INPUT["tau_charged_pion_pt"])[0],
@@ -330,26 +383,26 @@ int main() {
                     antitau_neut_pion_p4.E()
                 );
 
-                                TLorentzVector z_vis_p4 = ZedVis(
-                                                (*BUFFER_BY_INPUT["tau_charged_pion_pt"])[0],
-                                                (*BUFFER_BY_INPUT["tau_charged_pion_eta"])[0],
-                                                (*BUFFER_BY_INPUT["tau_charged_pion_phi"])[0],
-                                                (*BUFFER_BY_INPUT["tau_charged_pion_E"])[0],
+                TLorentzVector z_vis_p4 = ZedVis(
+                                (*BUFFER_BY_INPUT["tau_charged_pion_pt"])[0],
+                                (*BUFFER_BY_INPUT["tau_charged_pion_eta"])[0],
+                                (*BUFFER_BY_INPUT["tau_charged_pion_phi"])[0],
+                                (*BUFFER_BY_INPUT["tau_charged_pion_E"])[0],
 
-                                                (*BUFFER_BY_INPUT["antitau_charged_pion_pt"])[0],
-                                                (*BUFFER_BY_INPUT["antitau_charged_pion_eta"])[0],
-                                                (*BUFFER_BY_INPUT["antitau_charged_pion_phi"])[0],
-                                                (*BUFFER_BY_INPUT["antitau_charged_pion_E"])[0],
+                                (*BUFFER_BY_INPUT["antitau_charged_pion_pt"])[0],
+                                (*BUFFER_BY_INPUT["antitau_charged_pion_eta"])[0],
+                                (*BUFFER_BY_INPUT["antitau_charged_pion_phi"])[0],
+                                (*BUFFER_BY_INPUT["antitau_charged_pion_E"])[0],
 
-                                                tau_neut_pion_p4.Pt(),
-                                                tau_neut_pion_p4.Eta(),
-                                                tau_neut_pion_p4.Phi(),
-                                                tau_neut_pion_p4.E(),
+                                tau_neut_pion_p4.Pt(),
+                                tau_neut_pion_p4.Eta(),
+                                tau_neut_pion_p4.Phi(),
+                                tau_neut_pion_p4.E(),
 
-                                                antitau_neut_pion_p4.Pt(),
-                                                antitau_neut_pion_p4.Eta(),
-                                                antitau_neut_pion_p4.Phi(),
-                                                antitau_neut_pion_p4.E()
+                                antitau_neut_pion_p4.Pt(),
+                                antitau_neut_pion_p4.Eta(),
+                                antitau_neut_pion_p4.Phi(),
+                                antitau_neut_pion_p4.E()
                 );
 
                 // Psi for various Upsilon
@@ -370,16 +423,19 @@ int main() {
                 if ((*BUFFER_BY_INPUT["boson_pt"])[0] < 20){
                     variablesByName["psi low Z pT"] = variablesByName["psi truth"];
                     variablesByName["psi true boost low Z pT"] = variablesByName["psi truth true boost"];
+                    variablesByName["psi bump low Z pT"] = variablesByName["psi truth bump"];
                     low_pt_count += 1;
                 }
                 else if (((*BUFFER_BY_INPUT["boson_pt"])[0] >= 20) && ((*BUFFER_BY_INPUT["boson_pt"])[0] < 40)){
                     variablesByName["psi med Z pT"] = variablesByName["psi truth"];
                     variablesByName["psi true boost med Z pT"] = variablesByName["psi truth true boost"];
+                    variablesByName["psi bump med Z pT"] = variablesByName["psi truth bump"];
                     med_pt_count += 1;
                 }
                 else{
                     variablesByName["psi high Z pT"] = variablesByName["psi truth"];
                     variablesByName["psi true boost high Z pT"] = variablesByName["psi truth true boost"];
+                    variablesByName["psi bump high Z pT"] = variablesByName["psi truth bump"];
                     high_pt_count += 1;
                 }
 
@@ -387,9 +443,6 @@ int main() {
                 variablesByName["Z eta vis"] = z_vis_p4.Eta();
                 variablesByName["Z phi vis"] = z_vis_p4.Phi();
                 variablesByName["Z E vis"] = z_vis_p4.E();
-                variablesByName["Z px vis"] = z_vis_p4.Px();
-                variablesByName["Z py vis"] = z_vis_p4.Py();
-                variablesByName["Z pz vis"] = z_vis_p4.Pz();
 
                 variablesByName["Z pT real"] = (*BUFFER_BY_INPUT["boson_pt"])[0];
                 variablesByName["Z eta real"] = (*BUFFER_BY_INPUT["boson_eta"])[0];

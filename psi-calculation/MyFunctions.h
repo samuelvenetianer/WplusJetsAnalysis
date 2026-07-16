@@ -23,6 +23,32 @@ float TruthPsiHadHad(
                 float antitau_n_E
                 );
 
+float TruthPsiHadHadBump(
+                float tau_ch_pt,  // tau charged pion
+                float tau_ch_eta,
+                float tau_ch_phi,
+                float tau_ch_E,
+
+                float antitau_ch_pt,  // anti-tau charged pion
+                float antitau_ch_eta,
+                float antitau_ch_phi,
+                float antitau_ch_E,
+
+                float tau_n_pt,  // tau neutral pion
+                float tau_n_eta,
+                float tau_n_phi,
+                float tau_n_E,
+
+                float antitau_n_pt,  // anti-tau neutral pion
+                float antitau_n_eta,
+                float antitau_n_phi,
+                float antitau_n_E,
+
+                float bump_px,
+                float bump_py,
+                float bump_pz
+                );
+
 float TruthPsiHadHadTrueBoost(
                 float tau_ch_pt,  // tau charged pion
                 float tau_ch_eta,
