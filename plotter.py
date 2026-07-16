@@ -53,4 +53,4 @@ hist.SetMaximum(hist.GetMaximum() * 1.1)
 # Ensure all settings are current
 c.Update()
 
-c.SaveAs(f"plots/{filestem}.png")
+c.SaveAs(f"plots/{sys.argv[2]}.png")

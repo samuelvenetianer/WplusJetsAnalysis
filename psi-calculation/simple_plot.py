@@ -24,7 +24,8 @@ s = ROOT.THStack("s", "s")
 
 # print("Creating histogram for...")
 
-hist_file = ROOT.TFile(sys.argv[1])
+hist_file = ROOT.TFile(f"{sys.argv[1]}")
+print(hist_file)
 hist_name = hist_file.GetListOfKeys()[0] # Gets name and title and assigns to variable
 hist = hist_file.Get(hist_name.GetName()) # Pulls name only to create hist and assign to variable
 xaxis_label=hist_name.GetName()
@@ -59,11 +60,11 @@ s.GetXaxis().SetTitleOffset(1.1)
 s.GetYaxis().SetTitleOffset(1.6)
 # s.GetXaxis().SetMaxDigits(1)
 # Allow room for space at top and bottom of plot
-s.SetMaximum(hist.GetMaximum()*1.5)
-s.SetMinimum(hist.GetMinimum()*0.9)
+s.SetMaximum(hist.GetMaximum()*1.02)
+s.SetMinimum(hist.GetMinimum()*.98)
 
 # legend settings
-legend = ROOT.TLegend(.3, 0.90, 0.6, 0.75) # (x1, y1, x2, y2)
+legend = ROOT.TLegend(.5, 0.90, 0.8, 0.75) # (x1, y1, x2, y2)
 legend.AddEntry(hist, "Entries:" + str(entries), "l")
 legend.SetTextSize(0.04)
 legend.SetBorderSize(0)

@@ -39,7 +39,7 @@ xaxis_label = []
 for i in range(0, len(filestems)):
         print("Creating histogram for", filestems[i])
 
-        hist_file = ROOT.TFile("/cluster/tufts/beaucheminlab/svenet01/WplusJetsAnalysis/psi-calculation/hists/"+filestems[i]+".root")
+        hist_file = ROOT.TFile("/cluster/tufts/beaucheminlab/svenet01/WplusJetsAnalysis/psi-calculation/hists_compare/"+filestems[i]+".root")
         hist_name = hist_file.GetListOfKeys()[0] # Gets name and title and assigns to variable
         hist = hist_file.Get(hist_name.GetName()) # Pulls name only to create hist and assign to variable
         xaxis_label.append(hist_name.GetName())
@@ -52,10 +52,10 @@ for i in range(0, len(filestems)):
         hist.SetMarkerColor(i+1)
         hist.SetMarkerStyle(20)
         hist.SetLineColor(i+1)
-        hist.SetLineStyle(1)
-        hist.SetLineWidth(5)
-        maxes.append(hist.GetMaximum()*1.5)
-        mins.append(hist.GetMinimum()*0.9)
+        # hist.SetLineStyle(i+2)
+        hist.SetLineWidth(2)
+        maxes.append(hist.GetMaximum()*1.05)
+        mins.append(hist.GetMinimum()*.95)
         
         gROOT.cd()
         hnew=hist.Clone()
@@ -64,7 +64,7 @@ for i in range(0, len(filestems)):
 
 c.cd()
 
-s.Draw("nostack") # "P nostack" plots as markers
+s.Draw("nostack, hist") # "P nostack" plots as markers
 s.SetTitle("")
 # s.GetXaxis().SetTitle("Z p_{T}_{vis}/Z p_{T}_{real}")
 s.GetXaxis().SetTitle(xaxis_label[0])
@@ -81,7 +81,7 @@ s.SetMaximum(max(maxes))
 s.SetMinimum(min(mins))
 
 # legend settings
-legend = ROOT.TLegend(.3, 0.90, 0.6, 0.75) # (x1, y1, x2, y2)
+legend = ROOT.TLegend(.3, 0.95, 0.6, 0.80) # (x1, y1, x2, y2)
 for i in range(0,len(filestems)):
         legend.AddEntry(hists[i], filestems[i] + ", Entries:" + str(entries[i]), "l")
         legend.SetTextSize(0.04)
@@ -90,4 +90,4 @@ for i in range(0,len(filestems)):
         # legend.SetFillStyle(1001)
         legend.Draw("L")
 
-c.SaveAs(f"/cluster/tufts/beaucheminlab/svenet01/WplusJetsAnalysis/psi-calculation/plots/{sys.argv[1]}.png")
+c.SaveAs(f"/cluster/tufts/beaucheminlab/svenet01/WplusJetsAnalysis/psi-calculation/hists_compare/{sys.argv[1]}.png")

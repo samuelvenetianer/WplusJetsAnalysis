@@ -1,7 +1,6 @@
 """
-This script uses pyroot functionality to create a png plot of multiple .root files overlaid
-Call in terminal as "python compare_plot.py <filestem1> <filestem2> etc..."
-        Up to 9 input files allowed (constrained by line style, which can be changed)
+This script uses pyroot functionality to create a png plot of multiple hists from same root file overlaid
+Call in terminal as "python compare_plot.py <filestem>"
 """
 
 # reformat into loop over a list of filenames
@@ -9,14 +8,17 @@ Call in terminal as "python compare_plot.py <filestem1> <filestem2> etc..."
 import ROOT
 import sys
 from ROOT import gROOT
+from ROOT import gDirectory
+from ROOT import TH1D
 
 ROOT.gStyle.SetOptStat(0)
 
-# Build array of filestems
-
-filestems = []
-for i in range(1,len(sys.argv)):
-        filestems.append(sys.argv[i])
+var1 = "muon_born_pt"
+var2 = "tau_born_pt"
+nbins = 50
+binlow = 0
+binhigh = 100 
+title = "pt_tautau"
 
 # Create canvas
 c = ROOT.TCanvas("c", "c", 1200, 800)
@@ -30,29 +32,46 @@ s = ROOT.THStack("s", "s")
 
 hists = []
 
-for i in range(0, len(filestems)):
-        print("Creating histogram for", filestems[i])
-        hist_file = ROOT.TFile(filestems[i]+".root")
-        hist_name = hist_file.GetListOfKeys()[0] # Gets name and title and assigns to variable
-        hist = hist_file.Get(hist_name.GetName()) # Pulls name only to create hist and assign to variable
-        hist_nEntries = hist.GetEntries()
+print("Creating histogram for", sys.argv[1])
+hist_file = ROOT.TFile.Open("/cluster/tufts/beaucheminlab/svenet01/WplusJetsAnalysis/pythia-outputs/2025/"+sys.argv[1]+".root", "READ")
+tree = hist_file.Get("ParticleTree")
+print(tree)
+mu = ROOT.TH1D("data", "mu", nbins, binlow, binhigh)
+tau = ROOT.TH1D("data", "tau", nbins, binlow, binhigh)
+for entryNum in range(0,tree.GetEntries()):
+        tree.GetEntry(entryNum)
+        var1_store = getattr(tree, var1)
+        var2_store = getattr(tree, var2)
+        # print("Size of var1, var2: ", "(", len(var1), ",", len(var2),")")
+        mu.Fill(var1_store[0])
+        mu.Fill(var1_store[1])
+        tau.Fill(var2_store[0])
+        tau.Fill(var2_store[1])
+mu.SetMarkerColor(2)
+mu.SetMarkerStyle(20)
+mu.SetLineColor(2)
+mu.SetLineStyle(1)
+mu.SetLineWidth(5)
 
-        hist.SetMarkerColor(i+2)
-        hist.SetMarkerStyle(20)
-        hist.SetLineColor(i+2)
-        hist.SetLineStyle(i+1)
-        hist.SetLineWidth(5)
+tau.SetMarkerColor(3)
+tau.SetMarkerStyle(20)
+tau.SetLineColor(3)
+tau.SetLineStyle(2)
+tau.SetLineWidth(5)
 
-        gROOT.cd()
-        hnew=hist.Clone()
-        s.Add(hnew)
-        hists.append(hnew)
+gROOT.cd()
+muon_stack=mu.Clone()
+tau_stack=tau.Clone()
+s.Add(muon_stack)
+s.Add(tau_stack)
+hists.append(muon_stack)
+hists.append(tau_stack)
 
 c.cd()
 
 s.Draw("nostack")
 s.SetTitle("")
-s.GetXaxis().SetTitle("Z pT")
+s.GetXaxis().SetTitle(title)
 s.GetYaxis().SetTitle("Events")
 s.GetXaxis().SetTitleSize(0.06)
 s.GetYaxis().SetTitleSize(0.06)
@@ -64,10 +83,10 @@ s.GetXaxis().SetMaxDigits(2)
 
 # legend settings
 legend = ROOT.TLegend(.5, 0.90, 0.8, 0.75) # (x1, y1, x2, y2)
-for i in range(0,len(filestems)):
-        legend.AddEntry(hists[i], filestems[i], "l")
-        legend.SetTextSize(0.04)
-        legend.SetBorderSize(0)
-        legend.Draw("L")
+legend.AddEntry(hists[0], var1, "l")
+legend.AddEntry(hists[1], var2, "l")
+legend.SetTextSize(0.04)
+legend.SetBorderSize(0)
+legend.Draw("L")
 
-c.SaveAs(f"plots/z_pt.png")
+c.SaveAs(f"plots/tautau_mumu/{title}.png")
