@@ -25,6 +25,8 @@
 
 int main() {
 
+    // force make
+	// recompile force
     const auto start{std::chrono::steady_clock::now()};
 
     // Specify input file
